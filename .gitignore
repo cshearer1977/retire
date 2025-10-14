@@ -8,6 +8,11 @@ __pycache__/
 .venv/
 
 notebooks/
+.DS_Store
+
+# Sphinx build directory
+docs/build/
+_build/
 
 
 # Byte-compiled / optimized / DLL files
