@@ -26,23 +26,35 @@ The ``retire`` package provides data and analysis tools for US coal plant retire
 Quick Start
 -----------
 
-.. code-block:: python
+.. plot::
+   :context: close-figs
+   :include-source: True
 
    from retire import Retire, Explore
    
    # Load data and create analysis objects
    retire_obj = Retire()
    explore = Explore(retire_obj.graph, retire_obj.raw_df)
-   
+
    # Visualize the network
-   fig, ax = explore.drawGraph(col='ret_STATUS')
+   fig, ax = explore.drawGraph(col="ret_STATUS")
+
+
+.. raw:: html
+
+   <p style="font-size:0.8em;">Figure adapted from Gathrid et al. (2025, <em>Nature Energy</em>).</p>
+
+
+.. ipython:: python
+
+   from retire import Retire, Explore
    
-   # Create geographic map
-   fig, ax = explore.drawMap()
+   retire_obj = Retire()
    
-   # Get manuscript results
-   group_analysis = retire_obj.get_group_report()
-   explanations = retire_obj.get_target_explanations()
+   retire_obj.get_group_report().head()
+   retire_obj.get_target_explanations().head()
+
+
 
 .. toctree::
    :maxdepth: 2
