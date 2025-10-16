@@ -9,6 +9,7 @@ __pycache__/
 
 notebooks/
 .DS_Store
+*.pkl
 
 # Sphinx build directory
 docs/build/
