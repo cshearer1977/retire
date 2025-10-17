@@ -1,8 +1,10 @@
 # retire/data.py
 
 import ast
+import numpy as np
 import pandas as pd
 import networkx as nx
+from collections import Counter
 from importlib.resources import files
 
 
@@ -202,3 +204,202 @@ def load_generator_level_dataset():
     """
     path = files("retire").joinpath("resources/generator_level_dataset.csv")
     return pd.read_csv(path)
+
+
+def load_retired_plant_dataset():
+    """
+    Load the 2020-2023 set of Retired US Coal Plants.
+
+    Dataset Overview
+    ----------------
+    This dataset contains detailed information on U.S. coal plants that retired between 2020 and 2023.
+
+    Because our analytical framework integrates static snapshots of political, demographic, public-opinion,
+    and other contextual variables drawn from multiple data sources (see Supplemental Information A.1),
+    we restrict the dataset to this recent four-year period. This window captures the most current wave
+    of coal plant retirements while maintaining sufficient data coverage across sources.
+
+    Not all variables are available for every plant. Some static datasets could not be applied uniformly
+    because data for certain years were unavailable or incomplete. Compiling this dataset required
+    cross-referencing and harmonizing data from numerous repositories, and additional work could extend
+    this compilation further—such as incorporating older retirements for validation against plants that
+    retired prior to 2020.
+
+    Returns
+    -------
+    pd.DataFrame
+        A structured dataset where each row represents a retired coal plant (2020–2023),
+        and columns capture plant-level operational, policy, demographic, and contextual variables.
+
+    Raises
+    ------
+    FileNotFoundError
+        If the dataset file does not exist at the specified path.
+    pd.errors.EmptyDataError
+        If the CSV file is empty.
+    pd.errors.ParserError
+        If the CSV file cannot be parsed.
+
+    Examples
+    --------
+    >>> from retire.data import load_generator_level_dataset
+    >>> gen_df = load_generator_level_dataset()
+    >>> print(f"Total generators: {len(gen_df)}")
+    >>> # Group by plant to see generator counts per plant
+    >>> gens_per_plant = gen_df.groupby('ORISPL').size()
+    >>> print(f"Average generators per plant: {gens_per_plant.mean():.1f}")
+    """
+    path = files("retire").joinpath("resources/raw_2020-2023_retired_coalplants.csv")
+    return pd.read_csv(path)
+
+
+def generate_target_matching_data() -> pd.DataFrame:
+    """
+    Prepare a unified dataset combining active coal plants with retired plants,
+    suitable for target matching within our mapper graph framework.
+
+    This function performs several key steps:
+    1. Loads the raw active coal plant dataset (`coal_raw`) and the retired plant dataset.
+    2. Renames retired plant columns to align with our internal dataset conventions.
+    3. Derives new variables:
+       - Total Nameplate Capacity (MW)
+       - Average Capacity Factor
+       - Mapped Fuel Type
+       - Retirement status (`ret_STATUS`)
+       - Age (averaged where multiple generators exist)
+    4. Aligns the retired plant dataset with the original dataset, keeping only shared columns.
+    5. Concatenates the retired and active datasets into a single DataFrame.
+
+    Notes
+    -----
+    - Because the retired plant dataset originates from 2020-2023, some static data sources
+      cannot be applied consistently (data may be missing or unavailable for these years).
+    - This preparation is necessary for mapping retired plants into our existing
+      graph landscape: determining which component and node a new plant most strongly fits.
+
+    Returns
+    -------
+    pd.DataFrame
+        A combined dataset of active and retired coal plants with harmonized column names
+        and derived variables ready for target matching.
+    """
+    coal_raw = load_dataset()
+    new_data = load_retired_plant_dataset()
+    new_data = new_data.rename(columns=COL_NAME_MAP)
+
+    # Derive new columns
+    new_data["Total Nameplate Capacity (MW)"] = new_data["NAMEPCAP"].apply(
+        _avg_ignore_nan
+    )
+
+    new_data["Average Capacity Factor"] = new_data["CFACT"].apply(_avg_ignore_nan)
+    new_data["Mapped Fuel Type"] = new_data["FUELG1"].apply(_most_frequent_string)
+    new_data["ret_STATUS"] = new_data["Percent_Capacity_Retiring"] + 1
+    new_data["Age"] = new_data["Age"].apply(_average_lists)
+
+    # Align with original columns
+    new_data = new_data[coal_raw.columns.intersection(new_data.columns)]
+    new_data_aligned = new_data.reindex(columns=coal_raw.columns)
+    combined = pd.concat([coal_raw, new_data_aligned], ignore_index=True)
+
+    return combined
+
+
+# ---------- Target Matching Data Prep Utilities ----------
+
+
+def _most_frequent_string(val_list):
+    """Return the most frequent string in a list, or None if empty."""
+    if isinstance(val_list, list):
+        counter = Counter(val_list)
+        return counter.most_common(1)[0][0] if counter else None
+    return None
+
+
+def _avg_ignore_nan(val):
+    if isinstance(val, str):
+        try:
+            val = ast.literal_eval(val)
+        except:
+            return np.nan
+    if isinstance(val, list) and val:
+        return np.nanmean([float(v) for v in val])
+    return np.nan
+
+
+def _average_lists(val):
+    if isinstance(val, str):
+        try:
+            val = ast.literal_eval(val)
+        except:
+            return val
+    if isinstance(val, list) and val:
+        return np.nanmean([float(v) for v in val])
+    return val
+
+
+# ╭──────────────────────────────────────────────────────────────────────────────────────────────────╮
+# │    Fixed mappings from the retired plants dataset --> the study dataset from `load_dataset()`    |
+# ╰──────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+COL_NAME_MAP = {
+    "PNAME": "Plant Name",
+    "National percentile for Demographic Index (within 3 miles of plant)": "National percentile for Demographic Index",
+    "National percentile for People of Color Population (within 3 miles of plant)": "National percentile for People of Color Population",
+    "National percentile for Low Income Population (within 3 miles of plant)": "National percentile for Low Income Population",
+    "National percentile for Population with Less Than High School Education (within 3 miles of plant)": "National percentile for Population with Less Than High School Education",
+}
+
+USED_COLUMNS = [
+    "ret_STATUS",
+    "Total Nameplate Capacity (MW)",
+    "Retiring Capacity",
+    "Average Capacity Factor",
+    "Generator Size Weighted Capacity Factor (%)",
+    "Age",
+    "Generator Size Weighted Age",
+    "Summed Generator annual net generation (MWh)",
+    "Percent Capacity Retiring",
+    "2022 SO2 Emissions (tons)",
+    "2021 vs 2022 SO2 Emissions (%)",
+    "2022 SO2 Emission Rate (lb/mmBtu)",
+    "2022 NOX Emissions (tons)",
+    "2022 NOX Emission Rate (lb/mmBtu)",
+    "2022 CO2 Emissions (tons)",
+    "2021 vs 2022 CO2 Emissions (%)",
+    "2022 CO2 Emission Rate (lb/mmBtu)",
+    "2022 Hg Emissions (lbs)",
+    "2022 Hg Emission Rate (lb/TBtu)",
+    "Facility has one or more low-emitting EGUs (LEE) units that do not report hourly emissions",
+    "eGRID subregion coal generation percent (resource mix)",
+    "eGRID subregion gas generation percent (resource mix)",
+    "eGRID subregion wind generation percent (resource mix)",
+    "eGRID subregion solar generation percent (resource mix)",
+    "Hospital Admits, All Respiratory",
+    "Infant Mortality",
+    "Hospital Admits, Cardiovascular (except heart attacks)",
+    "$ Work Loss Days",
+    "$ Mortality (low estimate)",
+    "$ Asthma Exacerbation",
+    "total population (ACS2018)",
+    "National percentile for Demographic Index",
+    "National percentile for People of Color Population",
+    "National percentile for Low Income Population",
+    "National percentile for Population with Less Than High School Education",
+    "PM 2.5 Emssions (tons)",
+    "PM 2.5 Emission Rate (lb/MWh)",
+    "Average PM Results (lb/mmBtu)",
+    "Mapped Fuel Type",
+    "Number of Coal Generators",
+    "Total Cost of Emissions Control Equiptment Retrofits Installed since 2012 ($)",
+    "Plant Coal Percentage (%)",
+    "2020 Net Cashflow",
+    "Average Cashflow",
+    "Forward Costs",
+    "Coal Debt Securitization Policy",
+    "State coal generation percent (resource mix)",
+    "State gas generation percent (resource mix)",
+    "LAT",
+    "LON",
+    "Plant Name",
+]

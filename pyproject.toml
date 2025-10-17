@@ -3,7 +3,7 @@ name = "retire"
 version = "0.1.0"
 description = "A data-driven approach to strategizing US coal plant retirement using network analysis and contextual vulnerabilities."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12,<3.13"
 license = {text = "BSD-3-Clause"}
 authors = [
     {name = "Jeremy Wayland", email = "jeremy@krv.ai"},
@@ -24,6 +24,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Visualization",
 ]
 dependencies = [
+    "ipykernel>=6.30.1",
     "ipywidgets>=8.1.7",
     "matplotlib>=3.5.0",
     "networkx>=2.8",
@@ -55,6 +56,9 @@ dev = [
     "black>=22.0.0",
     "flake8>=5.0.0",
     "mypy>=1.0.0",
+    "benson>=0.1.4",
+    "dect",
+    "tqdm>=4.67.1",
 ]
 docs = [
     "sphinx>=5.0.0",
@@ -73,3 +77,6 @@ notebooks = [
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.uv.sources]
+dect = { git = "https://github.com/aidos-lab/dect.git" }
