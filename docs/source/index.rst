@@ -79,4 +79,10 @@ Quick Start
 
    development/testing
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorials:
+
+   tutorials
+
 
