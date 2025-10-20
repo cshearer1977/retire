@@ -3,7 +3,7 @@ name = "retire"
 version = "0.1.0"
 description = "A data-driven approach to strategizing US coal plant retirement using network analysis and contextual vulnerabilities."
 readme = "README.md"
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.10"
 license = {text = "BSD-3-Clause"}
 authors = [
     {name = "Jeremy Wayland", email = "jeremy@krv.ai"},
@@ -56,8 +56,8 @@ dev = [
     "black>=22.0.0",
     "flake8>=5.0.0",
     "mypy>=1.0.0",
-    "benson>=0.1.4",
-    "dect",
+    "thema @ git+https://github.com/Krv-Analytics/Thema.git",
+    "benson @ git+https://github.com/Krv-Analytics/Benson.git",
     "tqdm>=4.67.1",
 ]
 docs = [
@@ -78,5 +78,3 @@ notebooks = [
 [tool.setuptools]
 include-package-data = true
 
-[tool.uv.sources]
-dect = { git = "https://github.com/aidos-lab/dect.git" }
