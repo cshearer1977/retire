@@ -27,12 +27,14 @@ dependencies = [
     "ipykernel>=6.30.1",
     "ipywidgets>=8.1.7",
     "matplotlib>=3.5.0",
+    "nbformat>=5.10.4",
     "networkx>=2.8",
     "numpy>=1.21.0",
     "pandas>=1.5.0",
     "plotly>=5.0.0",
     "scikit-learn>=1.1.0",
     "seaborn>=0.11.0",
+    "thema @ git+https://github.com/Krv-Analytics/Thema.git",
 ]
 
 [project.urls]
@@ -56,7 +58,6 @@ dev = [
     "black>=22.0.0",
     "flake8>=5.0.0",
     "mypy>=1.0.0",
-    "thema @ git+https://github.com/Krv-Analytics/Thema.git",
     "benson @ git+https://github.com/Krv-Analytics/Benson.git",
     "tqdm>=4.67.1",
 ]
