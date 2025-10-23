@@ -1,25 +1,22 @@
 [project]
-name = "retire"
-version = "0.1.0"
+name = "retire-coal"
+version = "0.1.1"
 description = "A data-driven approach to strategizing US coal plant retirement using network analysis and contextual vulnerabilities."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "BSD-3-Clause"}
 authors = [
-    {name = "Jeremy Wayland", email = "jeremy@krv.ai"},
-    {name = "Stuart Wayland", email = "stu@krv.ai"},
-    {name = "Sidney Gathrid", email = "sidney@krv.ai"}
+    {name = "Krv Labs", email = "team@krv.ai"}
 ]
 keywords = ["coal", "energy", "retirement", "network-analysis", "policy", "visualization"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Information Analysis",
     "Topic :: Scientific/Engineering :: Visualization",
 ]
@@ -34,7 +31,7 @@ dependencies = [
     "plotly>=5.0.0",
     "scikit-learn>=1.1.0",
     "seaborn>=0.11.0",
-    "thema @ git+https://github.com/Krv-Analytics/Thema.git",
+    "thema >= 0.1.3",
 ]
 
 [project.urls]
@@ -58,8 +55,8 @@ dev = [
     "black>=22.0.0",
     "flake8>=5.0.0",
     "mypy>=1.0.0",
-    "benson @ git+https://github.com/Krv-Analytics/Benson.git",
     "tqdm>=4.67.1",
+    "benson @ git+https://github.com/Krv-Analytics/Benson.git",
 ]
 docs = [
     "sphinx>=5.0.0",
@@ -78,4 +75,7 @@ notebooks = [
 
 [tool.setuptools]
 include-package-data = true
+
+[tool.uv.sources]
+dect = { git = "https://github.com/aidos-lab/dect.git" }
 
