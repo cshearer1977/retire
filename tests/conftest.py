@@ -234,9 +234,7 @@ def assert_dataframe_structure(df, expected_columns=None, min_rows=0):
         Minimum number of rows expected
     """
     assert isinstance(df, pd.DataFrame), "Expected pandas DataFrame"
-    assert (
-        len(df) >= min_rows
-    ), f"Expected at least {min_rows} rows, got {len(df)}"
+    assert len(df) >= min_rows, f"Expected at least {min_rows} rows, got {len(df)}"
 
     if expected_columns:
         missing_cols = set(expected_columns) - set(df.columns)

@@ -44,9 +44,7 @@ class TestDataLoadingFunctions:
             assert "ret_STATUS" in result.columns
 
     @pytest.mark.unit
-    def test_load_clean_dataset_success(
-        self, sample_clean_df, mock_resources_path
-    ):
+    def test_load_clean_dataset_success(self, sample_clean_df, mock_resources_path):
         """Test successful loading of the cleaned dataset."""
         with patch("pandas.read_csv", return_value=sample_clean_df):
             result = load_clean_dataset()
@@ -91,27 +89,21 @@ class TestDataLoadingFunctions:
     @pytest.mark.unit
     def test_data_loading_file_not_found(self, mock_resources_path):
         """Test handling of missing data files."""
-        with patch(
-            "pandas.read_csv", side_effect=FileNotFoundError("File not found")
-        ):
+        with patch("pandas.read_csv", side_effect=FileNotFoundError("File not found")):
             with pytest.raises(FileNotFoundError):
                 load_dataset()
 
     @pytest.mark.unit
     def test_data_loading_empty_file(self, mock_resources_path):
         """Test handling of empty CSV files."""
-        with patch(
-            "pandas.read_csv", side_effect=pd.errors.EmptyDataError("No data")
-        ):
+        with patch("pandas.read_csv", side_effect=pd.errors.EmptyDataError("No data")):
             with pytest.raises(pd.errors.EmptyDataError):
                 load_dataset()
 
     @pytest.mark.unit
     def test_data_loading_parse_error(self, mock_resources_path):
         """Test handling of CSV parsing errors."""
-        with patch(
-            "pandas.read_csv", side_effect=pd.errors.ParserError("Parse error")
-        ):
+        with patch("pandas.read_csv", side_effect=pd.errors.ParserError("Parse error")):
             with pytest.raises(pd.errors.ParserError):
                 load_dataset()
 
@@ -308,9 +300,7 @@ class TestDataValidation:
             # Test key numeric columns
             assert pd.api.types.is_numeric_dtype(df["LAT"])
             assert pd.api.types.is_numeric_dtype(df["LON"])
-            assert pd.api.types.is_numeric_dtype(
-                df["Total Nameplate Capacity (MW)"]
-            )
+            assert pd.api.types.is_numeric_dtype(df["Total Nameplate Capacity (MW)"])
             assert pd.api.types.is_numeric_dtype(df["ret_STATUS"])
 
             # Test string columns

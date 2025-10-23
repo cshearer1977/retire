@@ -129,9 +129,7 @@ class TestExploreTargetMethods:
         assert len(targets) == 0
 
     @pytest.mark.unit
-    def test_get_shortest_distances_to_targets(
-        self, sample_graph, sample_raw_df
-    ):
+    def test_get_shortest_distances_to_targets(self, sample_graph, sample_raw_df):
         """Test shortest distance calculation to target nodes."""
         explore = Explore(sample_graph, sample_raw_df)
 
@@ -154,9 +152,7 @@ class TestExploreVisualizationHelpers:
     """Test visualization helper methods without actual plotting."""
 
     @pytest.mark.unit
-    def test_generate_thema_graph_labels_average(
-        self, sample_graph, sample_raw_df
-    ):
+    def test_generate_thema_graph_labels_average(self, sample_graph, sample_raw_df):
         """Test label generation using average method."""
         explore = Explore(sample_graph, sample_raw_df)
 
@@ -175,9 +171,7 @@ class TestExploreVisualizationHelpers:
             assert node in labels_dict
 
     @pytest.mark.unit
-    def test_generate_thema_graph_labels_community(
-        self, sample_graph, sample_raw_df
-    ):
+    def test_generate_thema_graph_labels_community(self, sample_graph, sample_raw_df):
         """Test label generation using community method."""
         explore = Explore(sample_graph, sample_raw_df)
 

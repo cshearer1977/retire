@@ -70,9 +70,7 @@ class TestRetireGroupReport:
         """Test successful retrieval of group analysis report."""
         with patch("retire.retire.load_dataset", return_value=sample_raw_df):
             with patch("retire.retire.load_graph", return_value=sample_graph):
-                with patch(
-                    "pandas.read_csv", return_value=sample_group_analysis
-                ):
+                with patch("pandas.read_csv", return_value=sample_group_analysis):
                     retire_obj = Retire()
                     result = retire_obj.get_group_report()
 
@@ -91,9 +89,7 @@ class TestRetireGroupReport:
             with patch("retire.retire.load_graph", return_value=sample_graph):
                 with patch(
                     "pandas.read_csv",
-                    side_effect=FileNotFoundError(
-                        "Group analysis file not found"
-                    ),
+                    side_effect=FileNotFoundError("Group analysis file not found"),
                 ):
                     retire_obj = Retire()
                     with pytest.raises(FileNotFoundError):
@@ -122,9 +118,7 @@ class TestRetireTargetExplanations:
         """Test successful retrieval of target explanations."""
         with patch("retire.retire.load_dataset", return_value=sample_raw_df):
             with patch("retire.retire.load_graph", return_value=sample_graph):
-                with patch(
-                    "pandas.read_csv", return_value=sample_target_explanations
-                ):
+                with patch("pandas.read_csv", return_value=sample_target_explanations):
                     retire_obj = Retire()
                     result = retire_obj.get_target_explanations()
 
@@ -142,17 +136,13 @@ class TestRetireTargetExplanations:
                             assert col in result.columns
 
     @pytest.mark.unit
-    def test_get_target_explanations_file_not_found(
-        self, sample_raw_df, sample_graph
-    ):
+    def test_get_target_explanations_file_not_found(self, sample_raw_df, sample_graph):
         """Test handling when target explanations file is missing."""
         with patch("retire.retire.load_dataset", return_value=sample_raw_df):
             with patch("retire.retire.load_graph", return_value=sample_graph):
                 with patch(
                     "pandas.read_csv",
-                    side_effect=FileNotFoundError(
-                        "Explanations file not found"
-                    ),
+                    side_effect=FileNotFoundError("Explanations file not found"),
                 ):
                     retire_obj = Retire()
                     with pytest.raises(FileNotFoundError):
@@ -165,9 +155,7 @@ class TestRetireTargetExplanations:
         """Test that target explanations have expected data structure."""
         with patch("retire.retire.load_dataset", return_value=sample_raw_df):
             with patch("retire.retire.load_graph", return_value=sample_graph):
-                with patch(
-                    "pandas.read_csv", return_value=sample_target_explanations
-                ):
+                with patch("pandas.read_csv", return_value=sample_target_explanations):
                     retire_obj = Retire()
                     result = retire_obj.get_target_explanations()
 
@@ -178,9 +166,7 @@ class TestRetireTargetExplanations:
                         )  # Should be string IDs
 
                     # Check for scoring columns if they exist
-                    score_cols = [
-                        col for col in result.columns if "Score" in col
-                    ]
+                    score_cols = [col for col in result.columns if "Score" in col]
                     for col in score_cols:
                         assert pd.api.types.is_numeric_dtype(result[col])
 
@@ -228,9 +214,7 @@ class TestRetireDataConsistency:
 
                 # Check that graph membership indices are valid for the dataset
                 for node in retire_obj.graph.nodes():
-                    membership = retire_obj.graph.nodes[node].get(
-                        "membership", []
-                    )
+                    membership = retire_obj.graph.nodes[node].get("membership", [])
                     for idx in membership:
                         assert (
                             0 <= idx < len(retire_obj.raw_df)

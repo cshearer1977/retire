@@ -25,12 +25,12 @@ from .utils import (
 class Explore:
     """
     Visualization and exploration class for coal plant network analysis.
-    
+
     The Explore class provides comprehensive visualization tools for analyzing
     coal plant networks and retirement strategies. It generates various plots
     including network graphs, heatmaps, geographic maps, and interactive
     visualizations to understand plant relationships and retirement patterns.
-    
+
     Parameters
     ----------
     G : networkx.Graph
@@ -39,14 +39,14 @@ class Explore:
     raw_df : pandas.DataFrame
         Raw dataset containing coal plant characteristics, retirement status,
         and contextual vulnerability information.
-        
+
     Attributes
     ----------
     G : networkx.Graph
         The network graph used for analysis and visualization.
     raw_df : pandas.DataFrame
         The raw coal plant dataset.
-        
+
     Examples
     --------
     >>> from retire import Retire
@@ -60,7 +60,7 @@ class Explore:
     def __init__(self, G: nx.Graph, raw_df: pd.DataFrame):
         """
         Initialize the Explore visualization object.
-        
+
         Parameters
         ----------
         G : networkx.Graph
