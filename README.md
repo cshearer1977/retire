@@ -43,19 +43,6 @@ _By Krv Labs._
 
 The toolkit combines operational, environmental, policy, and socio-demographic data to help understand which coal plants are most vulnerable to retirement and why, enabling evidence-based decision-making for energy transition planning.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Key Features](#key-features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Documentation](#documentation)
-- [API Reference](#api-reference)
-- [Development](#development)
-- [Citation](#citation)
-- [License](#license)
-
 ## Citation
 
 If you use this package in your research, please cite:
@@ -75,6 +62,21 @@ If you use this package in your research, please cite:
   issn    = {2058-7546}
 }
 ```
+
+We extend our gratitude to our coauthors and mentors, **Dr. Grace Wu** and **Dr. Ranjit Deshmukh**, from UCSB Environmental Studies, for their invaluable guidance and collaboration.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Documentation](#documentation)
+- [API Reference](#api-reference)
+- [Development](#development)
+- [Citation](#citation)
+- [License](#license)
 
 ## Key Features
 
