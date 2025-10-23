@@ -11,11 +11,15 @@ from .data import load_clean_dataset
 from .data import load_projection
 from .data import load_graph
 from .data import load_generator_level_dataset
+from .data import generate_target_matching_data
+from .data import USED_COLUMNS
 
 __all__ = [
-    'load_dataset',
-    'load_clean_dataset', 
-    'load_projection',
-    'load_graph',
-    'load_generator_level_dataset'
+    "load_dataset",
+    "load_clean_dataset",
+    "load_projection",
+    "load_graph",
+    "load_generator_level_dataset",
+    "generate_target_matching_data",
+    "USED_COLUMNS",
 ]

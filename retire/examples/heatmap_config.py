@@ -82,9 +82,7 @@ heatmap_config = {
         },
         {
             "name": "Average Generation (GWh/yr)",
-            "formula": lambda df: df[
-                "Summed Generator annual net generation (MWh)"
-            ]
+            "formula": lambda df: df["Summed Generator annual net generation (MWh)"]
             / 1000,
             "input": "group",
         },
@@ -108,10 +106,12 @@ heatmap_config = {
         },
     ],
     "categories": {
-        "Operational": [
+        " ": [
             "Plant Count",
             "Group Nameplate (GW)",
             "Group Retiring Capacity (GW)",
+        ],
+        "Operational": [
             "Average Generation (GWh/yr)",
             "Average Capacity Factor (%)",
             "Average Plant Age",
@@ -120,9 +120,9 @@ heatmap_config = {
             "CO2 Rate (lb/mmBtu)",
             "SO2 Rate (lb/mmBtu)",
             "PM2.5 Rate (lb/MWh)",
-            "Average Asthma Exacerbation Costs ($)",
         ],
         "Social Impact": [
+            "Average Asthma Exacerbation Costs ($)",
             "Average Population within 3 Miles (ACS2018)",
             "Low Income Percentile",
         ],

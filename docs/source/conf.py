@@ -5,43 +5,47 @@
 
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../..'))
+
+sys.path.insert(0, os.path.abspath("../.."))
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'retire'
-copyright = '2025, Krv Analytics'
-author = 'Krv Analytics'
+project = "retire"
+copyright = "2025, Krv Analytics"
+author = "Krv Analytics"
 
-version = '0.1.0'
-release = '0.1.0'
+version = "0.1.0"
+release = "0.1.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.todo',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.autosummary',
-    'myst_parser',
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.todo",
+    "sphinx.ext.intersphinx",
+    "sphinx.ext.autosummary",
+    "matplotlib.sphinxext.plot_directive",
+    "myst_parser",
+    "jupyter_sphinx",
+    "IPython.sphinxext.ipython_directive",
 ]
 
-templates_path = ['_templates']
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+templates_path = ["_templates"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-language = 'en'
+language = "en"
 
 # -- Options for autodoc ----------------------------------------------------
 autodoc_default_options = {
-    'members': True,
-    'member-order': 'bysource',
-    'special-members': '__init__',
-    'undoc-members': True,
-    'exclude-members': '__weakref__'
+    "members": True,
+    "member-order": "bysource",
+    "special-members": "__init__",
+    "undoc-members": True,
+    "exclude-members": "__weakref__",
 }
 
 # -- Options for Napoleon (NumPy/SciPy style docstrings) -------------------
@@ -65,20 +69,20 @@ autosummary_generate = True
 
 # -- Options for intersphinx references ------------------------------------
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-    'matplotlib': ('https://matplotlib.org/stable/', None),
-    'pandas': ('https://pandas.pydata.org/docs/', None),
-    'networkx': ('https://networkx.org/documentation/stable/', None),
-    'sklearn': ('https://scikit-learn.org/stable/', None),
+    "python": ("https://docs.python.org/3/", None),
+    "numpy": ("https://numpy.org/doc/stable/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    "matplotlib": ("https://matplotlib.org/stable/", None),
+    "pandas": ("https://pandas.pydata.org/docs/", None),
+    "networkx": ("https://networkx.org/documentation/stable/", None),
+    "sklearn": ("https://scikit-learn.org/stable/", None),
 }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'furo'
-html_static_path = ['_static']
+html_theme = "furo"
+html_static_path = ["_static"]
 html_title = f"{project} {version}"
 html_short_title = project
 
@@ -104,3 +108,11 @@ myst_enable_extensions = [
 
 # -- Options for todo extension ---------------------------------------------
 todo_include_todos = True
+
+html_static_path = ["_static"]
+
+html_theme_options = {
+    "light_logo": "logo.png",
+    "dark_logo": "logo-dark.png",
+    "sidebar_hide_name": True,
+}

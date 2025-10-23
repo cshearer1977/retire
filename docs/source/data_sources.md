@@ -20,3 +20,5 @@ The RETIRE package provides access to several processed datasets:
 
 - **Generator Level Dataset**: Detailed dataset with generator-specific information for coal plants
   - Access via: `load_generator_level_dataset()`
+
+For detailed information on the data sources, dataset construction, aggregation methods, and preprocessing choices, please refer to our [Supporting Information](https://static-content.springer.com/esm/art%3A10.1038%2Fs41560-025-01871-0/MediaObjects/41560_2025_1871_MOESM1_ESM.pdf).
