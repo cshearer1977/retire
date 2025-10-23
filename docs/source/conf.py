@@ -5,9 +5,6 @@
 
 import os
 import sys
-import plotly.io as pio
-
-pio.renderers.default = "sphinx_gallery"
 
 sys.path.insert(0, os.path.abspath("../.."))
 
@@ -32,7 +29,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosummary",
     "matplotlib.sphinxext.plot_directive",
-    "sphinx_plotly_directive",
     "myst_parser",
     "jupyter_sphinx",
     "IPython.sphinxext.ipython_directive",
@@ -112,3 +108,11 @@ myst_enable_extensions = [
 
 # -- Options for todo extension ---------------------------------------------
 todo_include_todos = True
+
+html_static_path = ["_static"]
+
+html_theme_options = {
+    "light_logo": "logo.png",
+    "dark_logo": "logo-dark.png",
+    "sidebar_hide_name": True,
+}
