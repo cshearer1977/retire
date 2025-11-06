@@ -1285,3 +1285,44 @@ class Explore:
         df_w_groups["Group"] = df_w_groups.index.map(plant_to_group)
 
         return df_w_groups
+
+    def assign_node_ids_to_rawdf(self):
+        """
+        Annotate the raw DataFrame with a new column called 'NodeIDs', which lists all
+        Graph Node IDs that each plant belongs to.
+
+        How it works:
+        -------------
+        - Iterates through all nodes in the graph.
+        - Each graph node can represent one or more plant indices stored in
+        G.nodes[node]["membership"].
+        - This function reverses that relationship:
+            * For each plant, collect all node IDs where it appears in membership.
+        - Adds a column to the DataFrame where each row contains a LIST of node IDs.
+
+        Returns
+        -------
+        pd.DataFrame
+            A copy of the raw DataFrame with a new column 'NodeIDs' where every cell
+            is a list of node IDs that include that plant.
+        """
+
+        # Build plant -> list of node IDs mapping
+        plant_to_nodes = {}
+
+        for node_id in self.G.nodes:
+            plant_indices = self.G.nodes[node_id].get("membership", [])
+            for plant in plant_indices:
+                if plant not in plant_to_nodes:
+                    plant_to_nodes[plant] = []
+                plant_to_nodes[plant].append(node_id)
+
+        # Create a copy of the original DataFrame
+        df_w_nodeids = self.raw_df.copy()
+
+        # Map each row's index to all node IDs it belongs to (default to empty list)
+        df_w_nodeids["NodeIDs"] = df_w_nodeids.index.map(
+            lambda idx: plant_to_nodes.get(idx, [])
+        )
+
+        return df_w_nodeids
