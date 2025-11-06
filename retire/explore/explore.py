@@ -188,6 +188,7 @@ class Explore:
         scaled_legend=False,
         vmax=2.5,
         figsize=(10, 4),
+        show_node_labels=False,
     ):
         """
         Visualize shortest path distances to target nodes in a network component.
@@ -243,10 +244,10 @@ class Explore:
         comp_obj = nx.connected_components(self.G)
         components = [self.G.subgraph(c).copy() for c in comp_obj]
         subGraph = components[component]
+
         fig, ax = plt.subplots(figsize=figsize, dpi=500)
         pos = nx.spring_layout(subGraph, k=0.15, seed=seed)
 
-        # Normalize color range
         if scaled_legend:
             norm = Normalize(vmin=0, vmax=vmax)
         else:
@@ -258,7 +259,6 @@ class Explore:
             plt.cm.tab20c(norm(distances_dict[node])) for node in subGraph.nodes()
         ]
 
-        # Node size
         if size_by_degree:
             node_sizes = [len(subGraph[node]) * 15 for node in subGraph.nodes()]
         else:
@@ -274,7 +274,7 @@ class Explore:
             ax=ax,
         )
 
-        # Highlight target nodes
+        # Highlight target nodes in blue (but no text yet)
         nx.draw_networkx_nodes(
             subGraph,
             pos,
@@ -284,18 +284,31 @@ class Explore:
             node_size=150,
             ax=ax,
         )
-        for node in targets:
-            ax.text(
-                pos[node][0],
-                pos[node][1],
-                "T",
-                color="white",
-                fontsize=6,
-                ha="center",
-                va="center",
-                fontweight="bold",
+
+        if show_node_labels:
+            # Show each node's native NetworkX label
+            nx.draw_networkx_labels(
+                subGraph,
+                pos,
+                labels={node: str(node) for node in subGraph.nodes()},
+                font_size=6,
+                font_color="black",
             )
 
+        else:
+            for node in targets:
+                ax.text(
+                    pos[node][0],
+                    pos[node][1],
+                    "T",
+                    color="white",
+                    fontsize=6,
+                    ha="center",
+                    va="center",
+                    fontweight="bold",
+                )
+
+        # Optional colorbar
         if show_colorbar:
             sm = plt.cm.ScalarMappable(cmap=plt.cm.tab20c, norm=norm)
             sm.set_array([])
